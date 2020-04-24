@@ -54,35 +54,6 @@ def dijkstra(graph, start, end):
     return path_output, distances[end][0], distances 
     
 
-NodesForeward = ['71','80','91','79','109','87']
-SafeDoors = ['13','24'] #13 STBD, 24 PORT
-
-for start in NodesForeward:
-    for end in SafeDoors:
-        er_path,time_taken,er_graph = dijkstra(R,start,end)
-        print("{:80s}{:10.1f}".format(er_path,time_taken))
-        c = np.random.uniform(size=(1,3))[0]
-        # print("COLOR: {:8.1f} {:8.1f} {:8.1f}".format(c[0],c[1],c[2]))
-        # print("PART: "+start+"_"+end)                                
-        ns = er_path.split('->')
-        for ni in range(1,len(ns)):
-            x1,y1,z1 = Ns[ns[ni]]
-            x2,y2,z2 = Ns[ns[ni-1]]
-            # print("SBOX: {:10.1f} {:10.1f} {:10.1f} {:10.1f} {:10.1f} {:10.1f} 400 400".format(x1*1000,y1*1000,z1*1000,x2*1000,y2*1000,z2*1000))
-
-
-
-# 
-mygraph = {
-    'A' 'C': 1, 'D': 2},
-    'B': {},
-    'C': {'B': 5, 'D': 2},
-    'D': {'E': 3, 'F': 5},
-    'E': {'F': 1},
-    'F': {'A': 5}
-}
-
-
 
 Ns = {}
 with open('nodecords.csv', 'r') as file:
@@ -125,6 +96,35 @@ for c in Cs:
         R[c[1]] = {c[0]:s} 
     else:
         R[c[1]][c[0]] = s
+
+NodesForeward = ['71','80','91','79','109','87']
+SafeDoors = ['13','24'] #13 STBD, 24 PORT
+
+for start in NodesForeward:
+    for end in SafeDoors:
+        er_path,time_taken,er_graph = dijkstra(R,start,end)
+        print("{:80s}{:10.1f}".format(er_path,time_taken))
+        c = np.random.uniform(size=(1,3))[0]
+        # print("COLOR: {:8.1f} {:8.1f} {:8.1f}".format(c[0],c[1],c[2]))
+        # print("PART: "+start+"_"+end)                                
+        ns = er_path.split('->')
+        for ni in range(1,len(ns)):
+            x1,y1,z1 = Ns[ns[ni]]
+            x2,y2,z2 = Ns[ns[ni-1]]
+            # print("SBOX: {:10.1f} {:10.1f} {:10.1f} {:10.1f} {:10.1f} {:10.1f} 400 400".format(x1*1000,y1*1000,z1*1000,x2*1000,y2*1000,z2*1000))
+
+
+
+# 
+mygraph = {
+    'A' 'C': 1, 'D': 2},
+    'B': {},
+    'C': {'B': 5, 'D': 2},
+    'D': {'E': 3, 'F': 5},
+    'E': {'F': 1},
+    'F': {'A': 5}
+}
+
 
 
 #Check all nodes are connected
@@ -203,16 +203,18 @@ Js['J27'] = 'P03_B_P'
 Js['J28'] = 'P03_B_FS'
 Js['J29'] = 'KOD_B'
 
+start = '95'
+end = '13'
 
 # for j in Js.keys():
 for j in ['J09']:
     Rimp = deepcopy(R)
-    colid = int(j[-2:])+10
-    fdr = Js[j][:3]
-    # fn = basefolder + fdr + "/" + j + "/" + j+"_rad_exit.r3d"    
-    # fnv = basefolder + fdr + "/" + j + "/" + j+"_vis_exit.r3d"    
-    fn = basefolder + "/" + j+"_rad_exit.r3d"    
-    fnv = basefolder +"/" + j+"_vis_exit.r3d"    
+    # colid = int(j[-2:])+10
+    # fdr = Js[j][:3]
+    fn =  "./R3D/" + j+"_rad_exit.r3d"    
+    fnv = "./R3D/" + j+"_vis_exit.r3d"    
+    # fn = basefolder + "/" + j+"_rad_exit.r3d"    
+    # fnv = basefolder +"/" + j+"_vis_exit.r3d"    
     
     if (os.path.exists(fn) == False):
         print(fn + " does not exist")
@@ -226,7 +228,7 @@ for j in ['J09']:
         fieldname = T.names[fieldnum]
         fieldnamev = Tv.names[fieldnum]
         print(fieldname)
-        print(Js[j],fn,fieldname)
+        # print(Js[j],fn,fieldname)
         # er_imp_kfx = open(j+"_er_imp.kfx","w")
 
         #For each connection
@@ -328,3 +330,34 @@ time_taken_imp
     for start in NodesForeward:
         for end in SafeDoors:
             er_path,time_taken,er_graph = dijkstra(Rimp,start,end) """
+
+
+
+ns = er_path.split('->')
+Ps = np.zeros((len(ns),3))
+for ni in range(0,len(ns)):
+    # x1,y1,z1 = Ns[ns[ni]]
+    Ps[ni,:] = Ns[ns[ni]]
+    # x2,y2,z2 = Ns[ns[ni-1]]
+
+import matplotlib as mpl
+from mpl_toolkits.mplot3d import Axes3D
+mpl.rcParams['legend.fontsize'] = 10
+
+fig = plt.figure()
+ax = fig.gca(projection='3d')
+
+ax.auto_scale_xyz([30,200], [-30,30], [29,55])
+ax.set_xlim3d(30,200)
+ax.set_ylim3d(-30,30)
+ax.set_zlim3d(29,55)
+
+
+x = Ps[:,0]
+y = Ps[:,1]
+z = Ps[:,2]
+ax.plot(x, y, z, label='parametric curve')
+# ax.legend()
+plt.show()
+
+
