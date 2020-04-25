@@ -158,10 +158,6 @@ print(n)
 er_path_imp,time_taken_imp,er_graph_imp = dijkstra(R,start,end)
     
 
-r_th = [37500, 12500, 4700]
-t_th = [1, 40, 120]
-impairment = ['Imd fatality','12.5kW/mw','4.7kW/m2']
-fieldnum = 0
 
 # P04_A_AP        : /projects/300341/Reliance/Fire/P04/J01
 # P04_B_FS        : /projects/300341/Reliance/Fire/P04/J06
@@ -203,9 +199,15 @@ Js['J27'] = 'P03_B_P'
 Js['J28'] = 'P03_B_FS'
 Js['J29'] = 'KOD_B'
 
-start = '95'
+start = '97'
 end = '13'
+er_path,time_taken,er_graph = dijkstra(R,start,end)
 
+
+r_th = [37500, 12500, 4700]
+t_th = [1, 40, 120]
+impairment = ['Imd fatality','12.5kW/mw','4.7kW/m2']
+fieldnum = 0
 # for j in Js.keys():
 for j in ['J09']:
     Rimp = deepcopy(R)
@@ -335,10 +337,21 @@ time_taken_imp
 
 ns = er_path.split('->')
 Ps = np.zeros((len(ns),3))
-for ni in range(0,len(ns)):
-    # x1,y1,z1 = Ns[ns[ni]]
+for ni in range(0,len(ns)):    
     Ps[ni,:] = Ns[ns[ni]]
-    # x2,y2,z2 = Ns[ns[ni-1]]
+
+ns_imp = er_path_imp.split('->')
+Ps_imp = np.zeros((len(ns),3))
+for ni in range(0,len(ns)):    
+    Ps_imp[ni,:] = Ns[ns_imp[ni]]
+    
+
+x = Ps[:,0]
+y = Ps[:,1]
+z = Ps[:,2]
+x_imp = Ps_imp[:,0]
+y_imp = Ps_imp[:,1]
+z_imp = Ps_imp[:,2]
 
 import matplotlib as mpl
 from mpl_toolkits.mplot3d import Axes3D
@@ -346,17 +359,25 @@ mpl.rcParams['legend.fontsize'] = 10
 
 fig = plt.figure()
 ax = fig.gca(projection='3d')
+ax.pbaspect = [1.,1./3.,1./6.]
+# ax.pbaspect = [6,2,1]
+# ax.pbaspect = [1,1,1]
+# ax.set_xlim3d(20,200)
+# ax.set_ylim3d(-90,90)
+# ax.set_zlim3d(0,180)
+# ax.pbaspect = [1,1,0.1]
 
-ax.auto_scale_xyz([30,200], [-30,30], [29,55])
-ax.set_xlim3d(30,200)
-ax.set_ylim3d(-30,30)
-ax.set_zlim3d(29,55)
+ax.xaxis.set_major_locator(plt.FixedLocator([120, 141, 168, 193]))
+ax.xaxis.set_major_formatter(plt.FixedFormatter(['2/3','3/4','4/5','S05']))
+ax.yaxis.set_major_locator(plt.FixedLocator([-27, -3, 3, 27]))
+ax.yaxis.set_major_formatter(plt.FixedFormatter(['ER_S','Tray_S','Tray_P','ER_P']))
+ax.zaxis.set_major_locator(plt.FixedLocator([35, 44, 52]))
+ax.zaxis.set_major_formatter(plt.FixedFormatter(['A','B','C']))
+# ax.plot(x, y, z, label="'Optimal Escape Path from {:s} to {:s}".format(start,end))
+ax.plot(x, y, z,'g')
+ax.plot(x_imp, y_imp, z_imp,'r--')
+ax.auto_scale_xyz([40,220], [-30,30], [26,56])
 
-
-x = Ps[:,0]
-y = Ps[:,1]
-z = Ps[:,2]
-ax.plot(x, y, z, label='parametric curve')
 # ax.legend()
 plt.show()
 
