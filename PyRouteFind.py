@@ -335,6 +335,8 @@ time_taken_imp
 
 
 
+
+
 ns = er_path.split('->')
 Ps = np.zeros((len(ns),3))
 for ni in range(0,len(ns)):    
@@ -357,15 +359,25 @@ import matplotlib as mpl
 from mpl_toolkits.mplot3d import Axes3D
 mpl.rcParams['legend.fontsize'] = 10
 
-fig = plt.figure()
+fig = plt.figure(figsize=(20,20))
 ax = fig.gca(projection='3d')
 ax.pbaspect = [1.,1./3.,1./6.]
-# ax.pbaspect = [6,2,1]
-# ax.pbaspect = [1,1,1]
+
 # ax.set_xlim3d(20,200)
 # ax.set_ylim3d(-90,90)
 # ax.set_zlim3d(0,180)
-# ax.pbaspect = [1,1,0.1]
+
+#To draw the overall ER
+for c in Cs:    
+    x = [Ns[c[0]][0], Ns[c[1]][0]]
+    y = [Ns[c[0]][1], Ns[c[1]][1]]
+    z = [Ns[c[0]][2], Ns[c[1]][2]]
+    # ax.plot(x, y, z,color='grey',alpha=0.5,label=c[0].rjust(3)+"-"+c[1].rjust(3))
+    ax.plot(x, y, z,color='grey',alpha=0.5)
+
+# ax.plot(x, y, z, label="'Optimal Escape Path from {:s} to {:s}".format(start,end))
+ax.plot(x, y, z,color='green',label='Fast Route')
+ax.plot(x_imp, y_imp, z_imp,color='red',linestyle='--',label='Fast upon MAH')
 
 ax.xaxis.set_major_locator(plt.FixedLocator([120, 141, 168, 193]))
 ax.xaxis.set_major_formatter(plt.FixedFormatter(['2/3','3/4','4/5','S05']))
@@ -373,12 +385,10 @@ ax.yaxis.set_major_locator(plt.FixedLocator([-27, -3, 3, 27]))
 ax.yaxis.set_major_formatter(plt.FixedFormatter(['ER_S','Tray_S','Tray_P','ER_P']))
 ax.zaxis.set_major_locator(plt.FixedLocator([35, 44, 52]))
 ax.zaxis.set_major_formatter(plt.FixedFormatter(['A','B','C']))
-# ax.plot(x, y, z, label="'Optimal Escape Path from {:s} to {:s}".format(start,end))
-ax.plot(x, y, z,'g')
-ax.plot(x_imp, y_imp, z_imp,'r--')
+
 ax.auto_scale_xyz([40,220], [-30,30], [26,56])
 
-# ax.legend()
+ax.legend()
 plt.show()
 
 
