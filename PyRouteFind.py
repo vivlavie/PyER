@@ -4,7 +4,7 @@
 
 
 #To read heat on and around SCE's
-import matplotlib.pyplot as plt
+
 from openpyxl import load_workbook
 import math
 import numpy as np
@@ -334,34 +334,39 @@ time_taken_imp
             er_path,time_taken,er_graph = dijkstra(Rimp,start,end) """
 
 
+start = '80'
+end = '13'
+er_path,time_taken,er_graph = dijkstra(R,start,end)
+er_path_imp,time_taken_imp,er_graph_imp = dijkstra(Rimp,start,end)
 
-
+if time_taken_imp != Inf:
+    ns_imp = er_path_imp.split('->')
+    Ps_imp = np.zeros((len(ns_imp),3))
+    for ni in range(0,len(ns_imp)):    
+        Ps_imp[ni,:] = Ns[ns_imp[ni]]
+    x_imp = Ps_imp[:,0]
+    y_imp = Ps_imp[:,1]
+    z_imp = Ps_imp[:,2]
+    
 
 ns = er_path.split('->')
 Ps = np.zeros((len(ns),3))
 for ni in range(0,len(ns)):    
     Ps[ni,:] = Ns[ns[ni]]
-
-ns_imp = er_path_imp.split('->')
-Ps_imp = np.zeros((len(ns),3))
-for ni in range(0,len(ns)):    
-    Ps_imp[ni,:] = Ns[ns_imp[ni]]
-    
-
 x = Ps[:,0]
 y = Ps[:,1]
 z = Ps[:,2]
-x_imp = Ps_imp[:,0]
-y_imp = Ps_imp[:,1]
-z_imp = Ps_imp[:,2]
 
 import matplotlib as mpl
+import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 mpl.rcParams['legend.fontsize'] = 10
 
-fig = plt.figure(figsize=(20,20))
+# fig = plt.figure(figsize=(10,4))
+fig = plt.figure()
 ax = fig.gca(projection='3d')
 ax.pbaspect = [1.,1./3.,1./6.]
+# ax.pbaspect = [1.,1.,1.]
 
 # ax.set_xlim3d(20,200)
 # ax.set_ylim3d(-90,90)
@@ -369,15 +374,18 @@ ax.pbaspect = [1.,1./3.,1./6.]
 
 #To draw the overall ER
 for c in Cs:    
-    x = [Ns[c[0]][0], Ns[c[1]][0]]
-    y = [Ns[c[0]][1], Ns[c[1]][1]]
-    z = [Ns[c[0]][2], Ns[c[1]][2]]
+    xc = [Ns[c[0]][0], Ns[c[1]][0]]
+    yc = [Ns[c[0]][1], Ns[c[1]][1]]
+    zc = [Ns[c[0]][2], Ns[c[1]][2]]
     # ax.plot(x, y, z,color='grey',alpha=0.5,label=c[0].rjust(3)+"-"+c[1].rjust(3))
-    ax.plot(x, y, z,color='grey',alpha=0.5)
+    ax.plot(xc, yc, zc,color='grey',alpha=0.5)
+    ax.text(xc[0],yc[0],zc[0],c[0])
+    ax.text(xc[1],yc[1],zc[1],c[1])
 
 # ax.plot(x, y, z, label="'Optimal Escape Path from {:s} to {:s}".format(start,end))
 ax.plot(x, y, z,color='green',label='Fast Route')
-ax.plot(x_imp, y_imp, z_imp,color='red',linestyle='--',label='Fast upon MAH')
+if time_taken_imp != Inf:
+    ax.plot(x_imp, y_imp, z_imp,color='red',linestyle='--',label='Fast upon MAH')
 
 ax.xaxis.set_major_locator(plt.FixedLocator([120, 141, 168, 193]))
 ax.xaxis.set_major_formatter(plt.FixedFormatter(['2/3','3/4','4/5','S05']))
@@ -390,5 +398,7 @@ ax.auto_scale_xyz([40,220], [-30,30], [26,56])
 
 ax.legend()
 plt.show()
+
+
 
 
