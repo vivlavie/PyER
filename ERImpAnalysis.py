@@ -68,8 +68,8 @@ Js['J28'] = 'P03_B_FS'
 Js['J29'] = 'KOD_B'
 
 
-for j in Js.keys():
-# for j in ['J02','J26']:
+# for j in Js.keys():
+for j in ['J12']:
     colid = int(j[-2:])+10
     fdr = Js[j][:3]    
     fn = basefolder + "//" + j+"_rad_exit.r3d"    
