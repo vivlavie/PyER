@@ -1,0 +1,20 @@
+1
+INTERACTIVE: key j
+> frame 1
+> jpg-qual 95
+> XM 42.799
+> XP 223.301
+> YM -26.501
+> YP 26.101
+> ZM 30.399
+> ZP 55.101
+> clearleg
+> key - p f d O N  
+CONTOURMODE: 0 0 0
+CONTOURPROJ: 0 0 0
+> bg 1 1 1
+SIZEPX: 1564 1046 
+> r_eva 0.3 
+> fg 0 0 0
+SAVEIMAGE: J19_er_imp.jpg
+CONTOUR: s 0 0 0 0
