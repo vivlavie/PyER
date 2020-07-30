@@ -3,7 +3,7 @@ ISOCOL: 1
 GRATING: 0.2
 INCLUDE: J23_er_imp.kfx
 SIZEPX: 1564 1046
-SAVEIMAGE: J23_er_imp2.jpg
+SAVEIMAGE: J23_er_imp.jpg
 > key - p f d O 
 > centerpoint 157.91 4.11577 42.75
 > width 189.626

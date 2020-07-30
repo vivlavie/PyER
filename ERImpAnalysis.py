@@ -29,9 +29,13 @@ with open('connectivity.csv', 'r') as file:
 
 Vh = 1.3 #average
 Vv = 0.49 #downward slowest person
-r_th = [37500, 12500, 4700]
-t_th = [1, 40, 120]
+# r_th = [37500, 12500, 4700]
+# t_th = [1, 40, 120]
 impairment = ['Imd fatality','12.5kW/mw','4.7kW/m2']
+r_th = [6300]
+t_th = [1]
+impairment = ['6.3kW/m2']
+
 fieldnum = 0
 
 
@@ -68,8 +72,8 @@ Js['J28'] = 'P03_B_FS'
 Js['J29'] = 'KOD_B'
 
 
-# for j in Js.keys():
-for j in ['J12']:
+for j in Js.keys():
+# for j in ['J12']:
     colid = int(j[-2:])+10
     fdr = Js[j][:3]    
     fn = basefolder + "//" + j+"_rad_exit.r3d"    
@@ -114,10 +118,12 @@ for j in ['J12']:
                 V = Vv
             dt = sqrt(dx*dx+dy*dy+dz*dz)/V
             ravg = (r1+r1m+rm+rm2+r2)/5.
+            rmax = max([r1,r1m,rm,rm2,r2])
             color = "0 1 0"
             #For each radiation impairment criteria
             for ck in range(0,len(r_th)):
-                if (ravg > r_th[ck]) and (dt > t_th[ck]):
+                # if (ravg > r_th[ck]) and (dt > t_th[ck]):
+                if (rmax > r_th[ck]) and (dt > t_th[ck]):
                     print ( Ns[c[0]], "->",Ns[c[1]], "{:8.1f} kW/m2 {:6.1f} sec {:s}".format(ravg/1000, dt, impairment[ck]))
                     c[2] = False #Set that the connnection is 'impaired'
                     color = "1 0 0"

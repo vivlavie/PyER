@@ -3,12 +3,12 @@ ISOCOL: 1
 GRATING: 0.2
 INCLUDE: J14_er_imp.kfx
 SIZEPX: 1564 1046
-SAVEIMAGE: J14_er_imp2.jpg
+SAVEIMAGE: J14_er_imp.jpg
 > key - p f d O 
 > centerpoint 157.91 4.11577 42.75
 > width 189.626
 > radius 189.626
-> v-ang 29.8147 330.624
+> v-ang 33.7586 328.646
 > XM 42.799
 > YM -26.501
 > ZM 30.399
